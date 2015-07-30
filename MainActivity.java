@@ -1,17 +1,22 @@
 package com.example.jarrodgeraldsgarage.simpletodolist;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,7 +48,9 @@ public class MainActivity extends ActionBarActivity {
 //                            cursor.getColumnIndexOrThrow(
 //                                    TaskContract.Columns.TASK)));
 //        }
-        updateUI();
+
+
+//        updateUI();
 
     }
 
@@ -57,35 +64,58 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Add a task");
-                builder.setMessage("What do you want to do?");
-                final EditText inputField = new EditText(this);
-                builder.setView(inputField);
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Log.d("MainActivity",inputField.getText().toString());
-                        String task = inputField.getText().toString();
-                        Log.d("MainActivity",task);
+                FourButtonDialogFrag myDiag=new FourButtonDialogFrag();
+                myDiag.show(getFragmentManager(),"Diag");
+                //AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                        TaskDBHelper helper = new TaskDBHelper(MainActivity.this);
-                        SQLiteDatabase db = helper.getWritableDatabase();
-                        ContentValues values = new ContentValues();
+//                Dialog builder = new Dialog(this);
+//                builder.setContentView(R.layout.frag_four_button_dialog);
+//                builder.show();
 
-                        values.clear();
-                        values.put(TaskContract.Columns.TASK, task);
+//                LayoutInflater inflater = getLayoutInflater();
+//                //inflate view for alertdialog since we are using multiple views inside a viewgroup (root = Layout top-level) (linear, relative, framelayout etc..)
+//                //inflater.inflate(R.layout.fragment_search, container, false)
+//                View view = inflater.inflate(R.layout.frag_four_button_dialog, container, false);
 
-                        db.insertWithOnConflict(TaskContract.TABLE, null, values,
-                                SQLiteDatabase.CONFLICT_IGNORE);
+//                Button IUButton = (Button) view.findViewById(R.id.ImpUrg); // etc.. for button2,3,4.
+//                Button NUButton = (Button) view.findViewById(R.id.NotImpUrg);
+//                Button INButton = (Button) view.findViewById(R.id.ImpNotUrg);
+//                Button NNButton = (Button) view.findViewById(R.id.NotImpNotUrg);
 
-                        updateUI();
-                    }
-                });
+//                builder.setView(view);
+//                builder.show();
 
-                builder.setNegativeButton("Cancel",null);
+//                builder.setTitle("Add a task");
+//                builder.setMessage("What do you want to do?");
+//                final EditText inputField = new EditText(this);
+//                builder.setView(inputField);
 
-                builder.create().show();
+
+
+//                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+////                        Log.d("MainActivity",inputField.getText().toString());
+//                        String task = inputField.getText().toString();
+//                        Log.d("MainActivity",task);
+//
+//                        TaskDBHelper helper = new TaskDBHelper(MainActivity.this);
+//                        SQLiteDatabase db = helper.getWritableDatabase();
+//                        ContentValues values = new ContentValues();
+//
+//                        values.clear();
+//                        values.put(TaskContract.Columns.TASK, task);
+//
+//                        db.insertWithOnConflict(TaskContract.TABLE, null, values,
+//                                SQLiteDatabase.CONFLICT_IGNORE);
+//
+//                        updateUI();
+//                    }
+//                });
+
+//                builder.setNegativeButton("Cancel",null);
+
+                //builder.create().show();
                 return true;
 
             // ... other code
@@ -94,6 +124,17 @@ public class MainActivity extends ActionBarActivity {
                 return false;
         }
     }
+//This is just for fragments or views
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        if (view != null) {
+//            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+//            if (parentViewGroup != null) {
+//                parentViewGroup.removeAllViews();
+//            }
+//        }
+//    }
 
     private void updateUI() {
         helper = new TaskDBHelper(MainActivity.this);

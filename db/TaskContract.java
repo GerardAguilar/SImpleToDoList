@@ -3,6 +3,7 @@ package com.example.jarrodgeraldsgarage.simpletodolist.db;
 /**
  * Created by gerar_000 on 7/29/2015.
  */
+//
 import android.provider.BaseColumns;
 
 public class TaskContract {

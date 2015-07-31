@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class TaskDBHelper extends SQLiteOpenHelper {
 
+//
     public TaskDBHelper(Context context) {
         super(context, TaskContract.DB_NAME, null, TaskContract.DB_VERSION);
     }

@@ -48,6 +48,21 @@ public class FourButtonDialogFrag extends DialogFragment{
         View v = inflater.inflate(R.layout.frag_four_button_dialog,
                 container, false);
 
+//        SQLiteDatabase sqlDB = new TaskDBHelper(getActivity().getApplicationContext()).getWritableDatabase();
+//        Cursor cursor = sqlDB.query(TaskContract.TABLE,
+//                new String[]{TaskContract.Columns.TASK},
+//                null,null,null,null,null);
+//
+//        cursor.moveToFirst();
+//        while(cursor.moveToNext()) {
+//            Log.d("MainActivity cursor",
+//                    cursor.getString(
+//                            cursor.getColumnIndexOrThrow(
+//                                    TaskContract.Columns.TASK)));
+//        }
+
+
+
         mainActivityView = inflater.inflate(R.layout.activity_main, container, false);
 
         inputField = (EditText) v.findViewById(R.id.InputText);
@@ -58,16 +73,17 @@ public class FourButtonDialogFrag extends DialogFragment{
                     public void onClick(View v) {
                         String task = inputField.getText().toString();
                         Log.d("MainActivity",task);
-
-                        helper = new TaskDBHelper(getActivity());
+                        //Open connection to write data
+                        helper = new TaskDBHelper(getActivity().getApplicationContext());
                         SQLiteDatabase db = helper.getWritableDatabase();
                         ContentValues values = new ContentValues();
 
                         values.clear();
                         values.put(TaskContract.Columns.TASK, task);
-
+                        //Writes data
                         db.insertWithOnConflict(TaskContract.TABLE,null,values,
                                 SQLiteDatabase.CONFLICT_IGNORE);
+                        db.close();
 
                         Log.d("FourButtonDialogFrag", task);
                         updateUI();
@@ -85,21 +101,31 @@ public class FourButtonDialogFrag extends DialogFragment{
         return v;
     }
 
-
+    //Instead of listadapter, just see if you can Log.d the test value
 
     private void updateUI() {
+        String[] testDbValue = new String[] { TaskContract.Columns.TASK};
         Log.d("MainActivity", "Blank");
-        helper = new TaskDBHelper(getActivity());
+        helper = new TaskDBHelper(getActivity().getApplicationContext());
         SQLiteDatabase sqlDB = helper.getReadableDatabase();
         Cursor cursor = sqlDB.query(TaskContract.TABLE,
                 new String[]{TaskContract.Columns._ID, TaskContract.Columns.TASK},
                 null, null, null, null, null);
 
+        cursor.moveToFirst();
+        while(cursor.moveToNext()) {
+            Log.d("MainActivity cursor",
+                    cursor.getString(
+                            cursor.getColumnIndexOrThrow(
+                                    TaskContract.Columns.TASK)));
+        }
+        cursor.moveToFirst();
+
         ListAdapter listAdapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.task_view,
                 cursor,
-                new String[] { TaskContract.Columns.TASK},
+                testDbValue,
                 new int[] { R.id.taskTextView},
                 0
         );
@@ -114,7 +140,8 @@ public class FourButtonDialogFrag extends DialogFragment{
 
 
 
-                listView = (ListView)mainActivityView.findViewById(R.id.list);
+        listView = (ListView)mainActivityView.findViewById(R.id.list);
+
         listView.setAdapter(listAdapter);
 //        this.setListAdapter(listAdapter);
         Log.d("FourButtonDialogFrag", "Blank2");

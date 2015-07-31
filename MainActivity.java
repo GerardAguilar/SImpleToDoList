@@ -29,26 +29,13 @@ import com.example.jarrodgeraldsgarage.simpletodolist.db.TaskDBHelper;
 
 public class MainActivity extends ActionBarActivity {
 
-    private TaskDBHelper helper;
+//    private TaskDBHelper helper;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        SQLiteDatabase sqlDB = new TaskDBHelper(this).getWritableDatabase();
-//        Cursor cursor = sqlDB.query(TaskContract.TABLE,
-//                new String[]{TaskContract.Columns.TASK},
-//                null,null,null,null,null);
-//
-//        cursor.moveToFirst();
-//        while(cursor.moveToNext()) {
-//            Log.d("MainActivity cursor",
-//                    cursor.getString(
-//                            cursor.getColumnIndexOrThrow(
-//                                    TaskContract.Columns.TASK)));
-//        }
-
 
 //        updateUI();
 
@@ -65,57 +52,13 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 FourButtonDialogFrag myDiag=new FourButtonDialogFrag();
-                myDiag.show(getFragmentManager(),"Diag");
-                //AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                Log.d("MainActivity", "1");
 
-//                Dialog builder = new Dialog(this);
-//                builder.setContentView(R.layout.frag_four_button_dialog);
-//                builder.show();
-
-//                LayoutInflater inflater = getLayoutInflater();
-//                //inflate view for alertdialog since we are using multiple views inside a viewgroup (root = Layout top-level) (linear, relative, framelayout etc..)
-//                //inflater.inflate(R.layout.fragment_search, container, false)
-//                View view = inflater.inflate(R.layout.frag_four_button_dialog, container, false);
-
-//                Button IUButton = (Button) view.findViewById(R.id.ImpUrg); // etc.. for button2,3,4.
-//                Button NUButton = (Button) view.findViewById(R.id.NotImpUrg);
-//                Button INButton = (Button) view.findViewById(R.id.ImpNotUrg);
-//                Button NNButton = (Button) view.findViewById(R.id.NotImpNotUrg);
-
-//                builder.setView(view);
-//                builder.show();
-
-//                builder.setTitle("Add a task");
-//                builder.setMessage("What do you want to do?");
-//                final EditText inputField = new EditText(this);
-//                builder.setView(inputField);
+                Log.d("MainActivity", "2");
+                myDiag.show(getFragmentManager(), "Diag");
 
 
 
-//                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-////                        Log.d("MainActivity",inputField.getText().toString());
-//                        String task = inputField.getText().toString();
-//                        Log.d("MainActivity",task);
-//
-//                        TaskDBHelper helper = new TaskDBHelper(MainActivity.this);
-//                        SQLiteDatabase db = helper.getWritableDatabase();
-//                        ContentValues values = new ContentValues();
-//
-//                        values.clear();
-//                        values.put(TaskContract.Columns.TASK, task);
-//
-//                        db.insertWithOnConflict(TaskContract.TABLE, null, values,
-//                                SQLiteDatabase.CONFLICT_IGNORE);
-//
-//                        updateUI();
-//                    }
-//                });
-
-//                builder.setNegativeButton("Cancel",null);
-
-                //builder.create().show();
                 return true;
 
             // ... other code
@@ -124,52 +67,7 @@ public class MainActivity extends ActionBarActivity {
                 return false;
         }
     }
-//This is just for fragments or views
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        if (view != null) {
-//            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
-//            if (parentViewGroup != null) {
-//                parentViewGroup.removeAllViews();
-//            }
-//        }
-//    }
-
-    private void updateUI() {
-        helper = new TaskDBHelper(MainActivity.this);
-        SQLiteDatabase sqlDB = helper.getReadableDatabase();
-        Cursor cursor = sqlDB.query(TaskContract.TABLE,
-                new String[]{TaskContract.Columns._ID, TaskContract.Columns.TASK},
-                null, null, null, null, null);
-
-        ListAdapter listAdapter = new SimpleCursorAdapter(
-                this,
-                R.layout.task_view,
-                cursor,
-                new String[] { TaskContract.Columns.TASK},
-                new int[] { R.id.taskTextView},
-                0
-        );
-        ListView listView = (ListView)findViewById(R.id.list);
-        listView.setAdapter(listAdapter);
-//        this.setListAdapter(listAdapter);
-    }
-
-    public void onDoneButtonClick(View view) {
-        View v = (View) view.getParent();
-        TextView taskTextView = (TextView) v.findViewById(R.id.taskTextView);
-        String task = taskTextView.getText().toString();
-
-        String sql = String.format("DELETE FROM %s WHERE %s = '%s'",
-                TaskContract.TABLE,
-                TaskContract.Columns.TASK,
-                task);
 
 
-        helper = new TaskDBHelper(MainActivity.this);
-        SQLiteDatabase sqlDB = helper.getWritableDatabase();
-        sqlDB.execSQL(sql);
-        updateUI();
-    }
+
 }
